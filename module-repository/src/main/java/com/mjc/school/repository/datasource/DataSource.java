@@ -1,5 +1,6 @@
 package com.mjc.school.repository.datasource;
 
+import com.mjc.school.repository.model.AuthorModel;
 import com.mjc.school.repository.model.NewsModel;
 
 import java.io.BufferedReader;
@@ -9,34 +10,35 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.*;
 
+@Getter
+@Setter
 public class DataSource {
-    String fileName;
-    private List<NewsModel> newsDataSource = new ArrayList<>();
-    private static Object OBJECT = new Object();
+    private final List<NewsModel> newsDataSource = new ArrayList<>();
+    private final List<AuthorModel> authorsDataSource = new ArrayList<>();
+    private static final Object OBJECT = new Object();
     private static volatile DataSource INSTANCE;
 
     public static DataSource getInstance(){
         DataSource result = INSTANCE;
         if (result == null){
             synchronized(OBJECT){
-                if (result == null){
-                    result = new DataSource();
-                    INSTANCE = result;
-                }
+                result = new DataSource();
+                INSTANCE = result;
             }
         }
         return result;
     }
 
-    public void readFile(String fileName){
+    public void readFile(String newsFile, String authorsFile){
 
         DataSource app = DataSource.getInstance();
+        InputStream is = app.getFileFromResourceAsStream(newsFile);
+        InputStream is2 = app.getFileFromResourceAsStream(authorsFile);
 
-        this.fileName = fileName;
-
-        InputStream is = app.getFileFromResourceAsStream(fileName);
-        readAll(is);
+        readAllNews(is);
+        readAllAuthors(is2);
 
     }
 
@@ -51,7 +53,7 @@ public class DataSource {
         }
     }
 
-    public void readAll(InputStream is){
+    public void readAllNews(InputStream is){
         try (
                 InputStreamReader streamReader = new InputStreamReader(is, StandardCharsets.UTF_8);
                 BufferedReader reader = new BufferedReader(streamReader)
@@ -71,13 +73,40 @@ public class DataSource {
         }
     }
 
+    public void readAllAuthors(InputStream is){
+        try (
+                InputStreamReader streamReader = new InputStreamReader(is, StandardCharsets.UTF_8);
+                BufferedReader reader = new BufferedReader(streamReader)
+        )
+        {
+            String line;
+            while ((line = reader.readLine()) != null){
+                String[] arr = line.split(",");
+                Long authorId = Long.valueOf(arr[0].strip());
+                String authorName = arr[1].strip();
+                authorsDataSource.add(new AuthorModel(authorId, authorName));
+            }
+            System.out.println(newsDataSource);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public List<NewsModel> getNewsDataSource(){
         return newsDataSource;
+    }
+    public List<AuthorModel> getAuthorsDataSource(){
+        return authorsDataSource;
     }
 
     public NewsModel addNewsToDataSource(NewsModel news){
         newsDataSource.add(news);
         return news;
+    }
+
+    public AuthorModel addAuthorToDataSource(AuthorModel author){
+        authorsDataSource.add(author);
+        return author;
     }
 
 

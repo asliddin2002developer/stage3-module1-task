@@ -8,8 +8,10 @@ import com.mjc.school.repository.model.NewsModel;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.lang.Boolean;
+import lombok.*;
 
-
+@Getter
+@Setter
 public class NewsRepository implements Repository<NewsModel> {
     private final DataSource dataSource;
     public NewsRepository() {
@@ -66,5 +68,14 @@ public class NewsRepository implements Repository<NewsModel> {
             }
         }
         return Boolean.valueOf("false");
+    }
+
+    public NewsModel isNewsExist(Long id){
+        for (NewsModel news : dataSource.getNewsDataSource()){
+            if (news.getId().equals(id)){
+                return news;
+            }
+        }
+        throw new NewsNotFoundException("News Not Found");
     }
 }

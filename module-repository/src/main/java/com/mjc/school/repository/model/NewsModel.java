@@ -10,7 +10,6 @@ import java.util.concurrent.atomic.AtomicLong;
 @Getter
 @Setter
 public class NewsModel {
-
     private static final AtomicLong count = new AtomicLong(0);
     public static List<NewsModel> allNews = new ArrayList<>();
     private Long id;
