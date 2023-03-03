@@ -7,10 +7,15 @@ import com.mjc.school.repository.model.NewsModel;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Scanner;
+import java.lang.Boolean;
+
 
 public class NewsRepository implements Repository<NewsModel> {
-    private DataSource dataSource = DataSource.getInstance();
+    private final DataSource dataSource;
+    public NewsRepository() {
+        dataSource = DataSource.getInstance();
+    }
+
 
     @Override
     public NewsModel create(NewsModel news) {
@@ -18,12 +23,12 @@ public class NewsRepository implements Repository<NewsModel> {
     }
 
     @Override
-    public List<NewsModel> getAllNews() {
+    public List<NewsModel> readAll() {
         return dataSource.getNewsDataSource();
     }
 
     @Override
-    public NewsModel getNewsById(Long id) {
+    public NewsModel readById(Long id) {
         System.out.println("Get news by id");
         for (NewsModel news : dataSource.getNewsDataSource()){
             if (news.getId().equals(id)){
@@ -37,48 +42,29 @@ public class NewsRepository implements Repository<NewsModel> {
     }
 
     @Override
-    public NewsModel update(Long id) {
+    public NewsModel update(NewsModel news) {
         System.out.println("Update news");
-        updateHelper(id);
-        return dataSource.getNewsDataSource().stream()
-                .filter(news -> news.getId().equals(id))
-                .findFirst()
-                .get();
-    }
-
-    private void updateHelper(Long id){
-        System.out.println("Enter title of the news (length should be 5 to 30):");
-        Scanner scanner = new Scanner(System.in);
-        String title = scanner.nextLine();
-
-        System.out.println("Enter content of the news (the length should be 5 to 255)");
-        String content = scanner.nextLine();
-
-        System.out.println("Enter the author id:");
-        Long authorId = scanner.nextLong();
-
-        LocalDateTime currentDate = LocalDateTime.now();
-
-        dataSource.getNewsDataSource().stream()
-                .filter(news -> news.getId().equals(id))
-                .forEach(news -> {
-                    news.setId(id);
-                    news.setTitle(title);
-                    news.setContent(content);
-                    news.setAuthorId(authorId);
-                    news.setLastUpdateDate(currentDate);
-                });
+        for (NewsModel cur : dataSource.getNewsDataSource()){
+            if (cur.getId().equals(news.getId())){
+                LocalDateTime date = LocalDateTime.now();
+                cur.setTitle(news.getTitle());
+                cur.setContent(news.getContent());
+                cur.setLastUpdateDate(date);
+                cur.setAuthorId(news.getAuthorId());
+            }
+        }
+        return news;
     }
 
     @Override
-    public boolean delete(Long id) {
+    public Boolean delete(Long id) {
         System.out.println("Delete news with id");
         for(NewsModel news : dataSource.getNewsDataSource()){
             if (news.getId().equals(id)){
                 dataSource.getNewsDataSource().remove(news);
-                return true;
+                return Boolean.valueOf("true");
             }
         }
-        return false;
+        return Boolean.valueOf("false");
     }
 }

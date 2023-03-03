@@ -36,7 +36,7 @@ public class DataSource {
         this.fileName = fileName;
 
         InputStream is = app.getFileFromResourceAsStream(fileName);
-        readDataFromFile(is);
+        readAll(is);
 
     }
 
@@ -51,7 +51,7 @@ public class DataSource {
         }
     }
 
-    public void readDataFromFile(InputStream is){
+    public void readAll(InputStream is){
         try (
                 InputStreamReader streamReader = new InputStreamReader(is, StandardCharsets.UTF_8);
                 BufferedReader reader = new BufferedReader(streamReader)
