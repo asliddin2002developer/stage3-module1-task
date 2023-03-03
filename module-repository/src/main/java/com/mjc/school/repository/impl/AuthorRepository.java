@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class AuthorRepository implements Repository<AuthorModel> {
-        public final DataSource dataSource;
+        private final DataSource dataSource;
         public AuthorRepository() {
             dataSource = DataSource.getInstance();
         }
