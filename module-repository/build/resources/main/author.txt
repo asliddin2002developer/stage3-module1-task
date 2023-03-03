@@ -1,0 +1,4 @@
+1, Asliddin
+2, Bobur
+3, Buxoriy
+4, Temur
