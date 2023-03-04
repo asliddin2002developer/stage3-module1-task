@@ -41,3 +41,10 @@ task repack(type: Jar, dependsOn: ':module-main:build') {
         }
     }
 }
+
+dependencies {
+    implementation project(path: ':module-main')
+    implementation project(path: ':module-web')
+    implementation project(path: ':module-service')
+    implementation project(path: ':module-repository')
+}

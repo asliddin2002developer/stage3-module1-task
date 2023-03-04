@@ -7,6 +7,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 public class NewsCreationDto {
+    private Long id;
     private String title;
     private String content;
     private Long authorId;

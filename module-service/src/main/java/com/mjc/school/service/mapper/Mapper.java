@@ -6,14 +6,16 @@ import com.mjc.school.service.dto.NewsDto;
 
 public class Mapper {
     public NewsDto toDto(NewsModel news){
+        Long id = news.getId();
         String title = news.getTitle();
         String content = news.getContent();
         Long authorId = news.getAuthorId();
-        return new NewsDto(title, content, authorId);
+        return new NewsDto(id,title, content, authorId);
     }
 
     public NewsModel toNewsModel(NewsCreationDto newsCreationDto){
         return new NewsModel(
+                newsCreationDto.getId(),
                 newsCreationDto.getTitle(),
                 newsCreationDto.getContent(),
                 newsCreationDto.getAuthorId()

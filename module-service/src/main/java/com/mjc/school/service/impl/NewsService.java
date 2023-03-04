@@ -13,15 +13,29 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class NewsService implements Service<NewsDto> {
-    private final NewsRepository newsRepository;
-    private final NewsValidation ERROR_VALIDATOR;
-    private final Mapper mapper;
+    private static NewsRepository newsRepository;
+    private static NewsValidation ERROR_VALIDATOR;
+    private static Mapper mapper;
+    private static final Object OBJECT = new Object();
+    private static volatile NewsService INSTANCE;
 
-    public NewsService() {
-        this.newsRepository = new NewsRepository();
-        ERROR_VALIDATOR = new NewsValidation();
-        mapper = new Mapper();
+    public static NewsService getInstance(){
+        NewsService result = INSTANCE;
+        if (result == null){
+            synchronized(OBJECT){
+                result = new NewsService();
+                newsRepository = new NewsRepository();
+                ERROR_VALIDATOR = new NewsValidation();
+                mapper = new Mapper();
+                INSTANCE = result;
+
+            }
+        }
+        return result;
+
     }
+
+
 
     @Override
     public NewsDto create(NewsDto newsDto) {
@@ -29,7 +43,8 @@ public class NewsService implements Service<NewsDto> {
         if (!ERROR_VALIDATOR.isValidNewsParams(newsDto)){
             throw new AuthorNotFoundException("Author not found with given id.");
         }
-        NewsModel news = mapper.toNewsModel(new NewsCreationDto(newsDto.getTitle(),
+        NewsModel news = mapper.toNewsModel(new NewsCreationDto(newsDto.getId(),
+                                                                newsDto.getTitle(),
                                                                 newsDto.getContent(),
                                                                 newsDto.getAuthorId()));
         newsRepository.getDataSource().getNewsDataSource().add(news);
@@ -54,9 +69,11 @@ public class NewsService implements Service<NewsDto> {
 
     @Override
     public NewsDto update(NewsDto newsDto) {
-        NewsModel news = newsRepository.update(mapper.toNewsModel(new NewsCreationDto(newsDto.getTitle(),
-                                                                     newsDto.getContent(),
-                                                                         newsDto.getAuthorId())));
+        NewsModel news = newsRepository.update(mapper.toNewsModel(new NewsCreationDto(
+                                                                             newsDto.getId(),
+                                                                             newsDto.getTitle(),
+                                                                             newsDto.getContent(),
+                                                                             newsDto.getAuthorId())));
         return mapper.toDto(news);
     }
 

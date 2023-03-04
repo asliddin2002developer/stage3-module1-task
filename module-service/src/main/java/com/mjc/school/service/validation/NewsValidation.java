@@ -25,6 +25,6 @@ public class NewsValidation {
             System.out.println(AUTHOR_DOESNOT_EXIST_VALIDATOR);
             return false;
         }
-        return false;
+        return true;
     }
 }

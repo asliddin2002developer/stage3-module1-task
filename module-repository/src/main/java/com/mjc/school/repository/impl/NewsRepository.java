@@ -45,9 +45,9 @@ public class NewsRepository implements Repository<NewsModel> {
 
     @Override
     public NewsModel update(NewsModel news) {
-        System.out.println("Update news");
         for (NewsModel cur : dataSource.getNewsDataSource()){
             if (cur.getId().equals(news.getId())){
+                System.out.println("Update news");
                 LocalDateTime date = LocalDateTime.now();
                 cur.setTitle(news.getTitle());
                 cur.setContent(news.getContent());

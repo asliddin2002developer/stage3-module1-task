@@ -4,9 +4,8 @@ import com.mjc.school.Repository;
 import com.mjc.school.repository.datasource.DataSource;
 import com.mjc.school.repository.exception.NewsNotFoundException;
 import com.mjc.school.repository.model.AuthorModel;
-import com.mjc.school.repository.model.NewsModel;
 
-import java.time.LocalDateTime;
+
 import java.util.List;
 
 public class AuthorRepository implements Repository<AuthorModel> {

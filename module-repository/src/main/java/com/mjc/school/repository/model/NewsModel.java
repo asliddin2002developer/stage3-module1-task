@@ -28,12 +28,22 @@ public class NewsModel {
         this.authorId = authorId;
     }
 
+    public NewsModel(Long id, String title, String content, Long authorId){
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.createDate =  LocalDateTime.now();;
+        this.lastUpdateDate = LocalDateTime.now();
+        this.authorId = authorId;
+    }
+
     public String toString(){
-        return this.getId() + " " +
-               this.getContent() + " " +
-               this.getAuthorId() + " " +
-               this.getCreateDate() + " " +
-               this.getLastUpdateDate();
+        return "[" + this.getId() + "," +
+                       this.getContent() + "," +
+                       this.getAuthorId() + "," +
+                       this.getCreateDate() + "," +
+                       this.getLastUpdateDate() +
+                "]";
 
     }
 }
