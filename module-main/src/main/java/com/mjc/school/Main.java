@@ -1,4 +1,4 @@
-import com.mjc.school.NewsManagement;
+package com.mjc.school;
 
 public class Main {
 
