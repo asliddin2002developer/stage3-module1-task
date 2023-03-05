@@ -8,9 +8,9 @@ public class AuthorValidation {
     public boolean isValidAuthorParams(AuthorDto authorDto){
         if (authorDto.getName().length() < 3 || authorDto.getName().length() > 15){
             System.out.println(AUTHOR_NAME_LENGTH);
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 
 }

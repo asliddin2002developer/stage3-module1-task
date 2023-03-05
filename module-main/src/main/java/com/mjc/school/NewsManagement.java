@@ -39,10 +39,12 @@ public class NewsManagement {
 
         AuthorController controller = new AuthorController();
         controller.showView();
-        AuthorDto author = new AuthorDto(1L, "Keras");
-        controller.update(author);
-        System.out.println("after");
-        controller.showView();
+        AuthorDto author = new AuthorDto(1L, "Ke");
+//        controller.update(author);
+//        System.out.println("after");
+//        controller.showView();
+
+        controller.create(author);
     }
 
     public DataSource retrieveDatabase(String newsFile, String authorFile){
