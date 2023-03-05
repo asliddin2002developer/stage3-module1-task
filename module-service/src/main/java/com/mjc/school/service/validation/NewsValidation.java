@@ -21,7 +21,7 @@ public class NewsValidation {
             return false;
         } else if (content.length() < 5 || news.getContent().length() >= 255) {
             System.out.println(CONTENT_LENGTH_VALIDATOR);
-        } else if (!authorRepository.isAuthorExist(authorId)) {
+        } else if (authorRepository.isAuthorExist(authorId) == null) {
             System.out.println(AUTHOR_DOESNOT_EXIST_VALIDATOR);
             return false;
         }

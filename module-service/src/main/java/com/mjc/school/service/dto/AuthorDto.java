@@ -8,4 +8,12 @@ import lombok.*;
 public class AuthorDto {
     private Long id;
     private String name;
+
+    public String toString(){
+        return "["  +
+                    id + "," +
+                    name +
+                "]";
+    }
+
 }

@@ -1,7 +1,6 @@
 package com.mjc.school.controller;
 
-import com.mjc.school.repository.model.NewsModel;
-import com.mjc.school.service.NewsView;
+import com.mjc.school.service.view.NewsView;
 import com.mjc.school.service.dto.NewsDto;
 import com.mjc.school.service.impl.NewsService;
 import lombok.*;
@@ -17,7 +16,7 @@ public class NewsController {
         newsView = new NewsView();
     }   
     public void showView(){
-        newsView.update();
+        newsView.display();
     }
 
     public void update(NewsDto news){

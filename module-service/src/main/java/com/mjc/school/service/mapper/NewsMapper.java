@@ -4,7 +4,7 @@ import com.mjc.school.repository.model.NewsModel;
 import com.mjc.school.service.dto.NewsCreationDto;
 import com.mjc.school.service.dto.NewsDto;
 
-public class Mapper {
+public class NewsMapper {
     public NewsDto toDto(NewsModel news){
         Long id = news.getId();
         String title = news.getTitle();
@@ -13,7 +13,7 @@ public class Mapper {
         return new NewsDto(id,title, content, authorId);
     }
 
-    public NewsModel toNewsModel(NewsCreationDto newsCreationDto){
+    public NewsModel toModel(NewsCreationDto newsCreationDto){
         return new NewsModel(
                 newsCreationDto.getId(),
                 newsCreationDto.getTitle(),

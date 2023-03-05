@@ -6,7 +6,7 @@ import com.mjc.school.service.Service;
 import com.mjc.school.service.dto.NewsCreationDto;
 import com.mjc.school.service.dto.NewsDto;
 import com.mjc.school.service.exception.AuthorNotFoundException;
-import com.mjc.school.service.mapper.Mapper;
+import com.mjc.school.service.mapper.NewsMapper;
 import com.mjc.school.service.validation.NewsValidation;
 
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class NewsService implements Service<NewsDto> {
     private static NewsRepository newsRepository;
     private static NewsValidation ERROR_VALIDATOR;
-    private static Mapper mapper;
+    private static NewsMapper newsMapper;
     private static final Object OBJECT = new Object();
     private static volatile NewsService INSTANCE;
 
@@ -26,7 +26,7 @@ public class NewsService implements Service<NewsDto> {
                 result = new NewsService();
                 newsRepository = new NewsRepository();
                 ERROR_VALIDATOR = new NewsValidation();
-                mapper = new Mapper();
+                newsMapper = new NewsMapper();
                 INSTANCE = result;
 
             }
@@ -43,7 +43,7 @@ public class NewsService implements Service<NewsDto> {
         if (!ERROR_VALIDATOR.isValidNewsParams(newsDto)){
             throw new AuthorNotFoundException("Author not found with given id.");
         }
-        NewsModel news = mapper.toNewsModel(new NewsCreationDto(newsDto.getId(),
+        NewsModel news = newsMapper.toModel(new NewsCreationDto(newsDto.getId(),
                                                                 newsDto.getTitle(),
                                                                 newsDto.getContent(),
                                                                 newsDto.getAuthorId()));
@@ -55,7 +55,7 @@ public class NewsService implements Service<NewsDto> {
     @Override
     public NewsDto readById(Long id) {
         NewsModel news = newsRepository.isNewsExist(id);
-        return mapper.toDto(news);
+        return newsMapper.toDto(news);
 
     }
 
@@ -63,18 +63,18 @@ public class NewsService implements Service<NewsDto> {
     public List<NewsDto> readAll() {
         List<NewsModel> newsList = newsRepository.readAll();
         return newsList.stream()
-                .map(mapper::toDto)
+                .map(newsMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public NewsDto update(NewsDto newsDto) {
-        NewsModel news = newsRepository.update(mapper.toNewsModel(new NewsCreationDto(
+        NewsModel news = newsRepository.update(newsMapper.toModel(new NewsCreationDto(
                                                                              newsDto.getId(),
                                                                              newsDto.getTitle(),
                                                                              newsDto.getContent(),
                                                                              newsDto.getAuthorId())));
-        return mapper.toDto(news);
+        return newsMapper.toDto(news);
     }
 
     @Override
