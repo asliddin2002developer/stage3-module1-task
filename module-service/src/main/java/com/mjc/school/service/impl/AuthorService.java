@@ -1,10 +1,10 @@
 package com.mjc.school.service.impl;
 
-import com.mjc.school.repository.exception.AuthorNotFoundException;
 import com.mjc.school.repository.impl.AuthorRepository;
 import com.mjc.school.repository.model.AuthorModel;
 import com.mjc.school.service.Service;
 import com.mjc.school.service.dto.AuthorDto;
+import com.mjc.school.service.exception.CharacterLengthIsNotValidException;
 import com.mjc.school.service.mapper.AuthorMapper;
 import com.mjc.school.service.validation.AuthorValidation;
 
@@ -37,10 +37,10 @@ public class AuthorService implements Service<AuthorDto> {
 
 
         @Override
-        public AuthorDto create(AuthorDto authorDto) {
+        public AuthorDto create(AuthorDto authorDto) throws CharacterLengthIsNotValidException {
             //validate
             if (!ERROR_VALIDATOR.isValidAuthorParams(authorDto)){
-                throw new AuthorNotFoundException("Author not found with given id.");
+                throw new CharacterLengthIsNotValidException("Author length should be 5-15 characters");
             }
             AuthorModel author = authorMapper.toModel(new AuthorDto(
                     authorDto.getId(),

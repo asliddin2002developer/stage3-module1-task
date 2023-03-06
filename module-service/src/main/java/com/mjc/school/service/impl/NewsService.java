@@ -38,7 +38,7 @@ public class NewsService implements Service<NewsDto> {
 
 
     @Override
-    public NewsDto create(NewsDto newsDto) {
+    public NewsDto create(NewsDto newsDto) throws AuthorNotFoundException {
         //validate
         if (!ERROR_VALIDATOR.isValidNewsParams(newsDto)){
             throw new AuthorNotFoundException("Author not found with given id.");

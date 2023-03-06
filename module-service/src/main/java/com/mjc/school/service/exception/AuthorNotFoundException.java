@@ -1,6 +1,6 @@
 package com.mjc.school.service.exception;
 
-public class AuthorNotFoundException extends RuntimeException {
+public class AuthorNotFoundException extends Exception {
     public AuthorNotFoundException(String msg){
         super(msg);
     }

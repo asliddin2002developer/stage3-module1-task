@@ -6,12 +6,19 @@ import com.mjc.school.controller.NewsController;
 import com.mjc.school.repository.datasource.DataSource;
 import com.mjc.school.service.dto.AuthorDto;
 import com.mjc.school.service.dto.NewsDto;
+import com.mjc.school.service.exception.AuthorNotFoundException;
+import com.mjc.school.service.exception.CharacterLengthIsNotValidException;
 import com.mjc.school.service.impl.NewsService;
 
 public class NewsManagement {
 
+
+    public static void main(String[] args) throws AuthorNotFoundException, CharacterLengthIsNotValidException {
+        NewsManagement.init();
+    }
+
     static DataSource database;
-    public static void init(){
+    public static void init() throws AuthorNotFoundException, CharacterLengthIsNotValidException {
         NewsManagement newsManagement = new NewsManagement();
         database = newsManagement.retrieveDatabase("content.txt", "author.txt");
 //        System.out.println(database.getNewsDataSource());
@@ -20,7 +27,7 @@ public class NewsManagement {
         start();
     }
 
-    public static void start(){
+    public static void start() throws AuthorNotFoundException, CharacterLengthIsNotValidException {
 //        NewsController controller = new NewsController();
 //        System.out.println("Before update");
 //        controller.showView();
