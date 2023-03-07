@@ -1,8 +1,6 @@
 package com.mjc.school.controller;
 
 import com.mjc.school.service.dto.AuthorDto;
-import com.mjc.school.service.exception.AuthorNotFoundException;
-import com.mjc.school.service.exception.CharacterLengthIsNotValidException;
 import com.mjc.school.service.impl.AuthorService;
 import com.mjc.school.service.view.AuthorView;
 
@@ -23,7 +21,7 @@ public class AuthorController {
         model.update(authorDto);
     }
 
-    public void create(AuthorDto authorDto) throws CharacterLengthIsNotValidException {
+    public void create(AuthorDto authorDto){
         model.create(authorDto);
     }
 

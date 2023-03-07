@@ -2,7 +2,7 @@ package com.mjc.school.repository.impl;
 
 import com.mjc.school.Repository;
 import com.mjc.school.repository.datasource.DataSource;
-import com.mjc.school.repository.exception.NewsNotFoundException;
+import com.mjc.school.repository.exception.NotFoundException;
 import com.mjc.school.repository.model.NewsModel;
 
 import java.time.LocalDateTime;
@@ -30,7 +30,7 @@ public class NewsRepository implements Repository<NewsModel> {
     }
 
     @Override
-    public NewsModel readById(Long id) {
+    public NewsModel readById(Long id){
         System.out.println("Get news by id");
         for (NewsModel news : dataSource.getNewsDataSource()){
             if (news.getId().equals(id)){
@@ -40,7 +40,8 @@ public class NewsRepository implements Repository<NewsModel> {
         }
         //throw NewsNotFoundException
         System.out.println("Exception");
-        throw new NewsNotFoundException("Couldn't find the News with provided id");
+        System.err.println("Couldn't find the News with provided id");
+        throw new RuntimeException();
     }
 
     @Override
@@ -67,7 +68,7 @@ public class NewsRepository implements Repository<NewsModel> {
                 return Boolean.valueOf("true");
             }
         }
-        return Boolean.valueOf("false");
+        return false;
     }
 
     public NewsModel isNewsExist(Long id){
@@ -76,6 +77,6 @@ public class NewsRepository implements Repository<NewsModel> {
                 return news;
             }
         }
-        throw new NewsNotFoundException("News Not Found");
+        throw new RuntimeException("news not found");
     }
 }

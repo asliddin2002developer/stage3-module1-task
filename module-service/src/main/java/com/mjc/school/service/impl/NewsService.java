@@ -1,11 +1,12 @@
 package com.mjc.school.service.impl;
 
+import com.mjc.school.repository.exception.NotFoundException;
+import com.mjc.school.repository.exception.ValidatorException;
 import com.mjc.school.repository.impl.NewsRepository;
 import com.mjc.school.repository.model.NewsModel;
 import com.mjc.school.service.Service;
 import com.mjc.school.service.dto.NewsCreationDto;
 import com.mjc.school.service.dto.NewsDto;
-import com.mjc.school.service.exception.AuthorNotFoundException;
 import com.mjc.school.service.mapper.NewsMapper;
 import com.mjc.school.service.validation.NewsValidation;
 
@@ -38,18 +39,31 @@ public class NewsService implements Service<NewsDto> {
 
 
     @Override
-    public NewsDto create(NewsDto newsDto) throws AuthorNotFoundException {
+    public NewsDto create(NewsDto newsDto) {
         //validate
-        if (!ERROR_VALIDATOR.isValidNewsParams(newsDto)){
-            throw new AuthorNotFoundException("Author not found with given id.");
+            if (ERROR_VALIDATOR.isValidNewsParams(newsDto)) {
+                NewsModel news = newsMapper.toModel(new NewsCreationDto(newsDto.getId(),
+                        newsDto.getTitle(),
+                        newsDto.getContent(),
+                        newsDto.getAuthorId()));
+                newsRepository.getDataSource().getNewsDataSource().add(news);
+                return newsDto;
+            }
+            throw new ValidatorException("News Params is not valid");
         }
-        NewsModel news = newsMapper.toModel(new NewsCreationDto(newsDto.getId(),
-                                                                newsDto.getTitle(),
-                                                                newsDto.getContent(),
-                                                                newsDto.getAuthorId()));
-        newsRepository.getDataSource().getNewsDataSource().add(news);
 
-        return newsDto;
+
+    @Override
+    public NewsDto update(NewsDto newsDto) {
+        if (ERROR_VALIDATOR.isValidNewsParams(newsDto)) {
+            NewsModel news = newsRepository.update(newsMapper.toModel(new NewsCreationDto(
+                    newsDto.getId(),
+                    newsDto.getTitle(),
+                    newsDto.getContent(),
+                    newsDto.getAuthorId())));
+            return newsMapper.toDto(news);
+        }
+        throw new ValidatorException("News Param is not valid");
     }
 
     @Override
@@ -68,17 +82,11 @@ public class NewsService implements Service<NewsDto> {
     }
 
     @Override
-    public NewsDto update(NewsDto newsDto) {
-        NewsModel news = newsRepository.update(newsMapper.toModel(new NewsCreationDto(
-                                                                             newsDto.getId(),
-                                                                             newsDto.getTitle(),
-                                                                             newsDto.getContent(),
-                                                                             newsDto.getAuthorId())));
-        return newsMapper.toDto(news);
-    }
-
-    @Override
     public Boolean delete(Long id) {
-        return newsRepository.delete(id);
+        if (newsRepository.delete(id)){
+            return true;
+        }else{
+            throw new NotFoundException("News with given id NOT FOUND");
+        }
     }
 }

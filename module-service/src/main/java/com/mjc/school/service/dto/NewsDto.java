@@ -12,6 +12,7 @@ public class NewsDto {
 
     public String toString(){
         return "[" +
+                    id + "," +
                     title + "," +
                     content + "," +
                     authorId  +

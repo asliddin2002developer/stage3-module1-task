@@ -2,7 +2,6 @@ package com.mjc.school.repository.impl;
 
 import com.mjc.school.Repository;
 import com.mjc.school.repository.datasource.DataSource;
-import com.mjc.school.repository.exception.AuthorNotFoundException;
 import com.mjc.school.repository.model.AuthorModel;
 import lombok.*;
 import java.util.List;
@@ -37,7 +36,8 @@ public class AuthorRepository implements Repository<AuthorModel> {
             }
             //throw NewsNotFoundException
             System.out.println("Exception");
-            throw new AuthorNotFoundException("Couldn't find the Author with provided id");
+            System.err.println("Couldn't find the Author with provided id");
+            throw new RuntimeException();
         }
 
         @Override
@@ -69,7 +69,8 @@ public class AuthorRepository implements Repository<AuthorModel> {
                     return author;
                 }
             }
-            throw new AuthorNotFoundException("author not found");
+            System.err.println("author not found");
+            throw new RuntimeException();
         }
 }
 

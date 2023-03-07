@@ -63,9 +63,9 @@ public class DataSource {
             String line;
             while ((line = reader.readLine()) != null){
                 String[] arr = line.split(",");
-                String title = arr[1].split(":")[1].strip();
-                String content = arr[2].split(":")[1].strip();
-                String authorId = arr[5].split(":")[1].strip();
+                String title = arr[0].split(":")[0].strip();
+                String content = arr[1].split(":")[1].strip();
+                String authorId = arr[4].split(":")[1].strip();
                 newsDataSource.add(new NewsModel(title, content, Long.valueOf(authorId)));
             }
 //            System.out.println(newsDataSource);
