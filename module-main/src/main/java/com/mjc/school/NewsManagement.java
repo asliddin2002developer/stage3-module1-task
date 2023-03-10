@@ -46,32 +46,16 @@ public class NewsManagement {
                     break;
                 case "3":
                     //update news
-                    try {
-                        controller.updateNews(menuHelper());
-                        System.out.println("UPDATE WAS SUCCESSFULL");
-                    }catch(ValidatorException e){
-                        e.printStackTrace();
-                    }
+                    controller.updateNews(menuHelper());
                     break;
                 case "4":
                     //Create news
-                    try {
-                        controller.createNews(menuHelper());
-                        System.out.println("NEWS WAS SUCCESSFULLY CREATED");
-                    }catch(ValidatorException e ){
-                        e.printStackTrace();
-                    }catch(RuntimeException e){
-                        e.printStackTrace();
-                    }
+                    controller.createNews(menuHelper());
                     break;
                 case "5":
                     //delete news
                     System.out.println("Enter news ID:");
-                    try {
-                        controller.deleteNews(Long.valueOf(scanner.nextLine()));
-                    }catch(NotFoundException e){
-                        e.printStackTrace();
-                    }
+                    controller.deleteNews(Long.valueOf(scanner.nextLine()));
                     break;
                 default:
                     System.err.println("Enter proper command!");

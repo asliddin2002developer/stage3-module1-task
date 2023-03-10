@@ -1,5 +1,7 @@
 package com.mjc.school.controller;
 
+import com.mjc.school.repository.exception.NotFoundException;
+import com.mjc.school.repository.exception.ValidatorException;
 import com.mjc.school.service.view.NewsView;
 import com.mjc.school.service.dto.NewsDto;
 import com.mjc.school.service.impl.NewsService;
@@ -26,7 +28,11 @@ public class NewsController {
     }
 
     public void getNewsById(Long id){
-        System.out.println(model.readById(id));
+        try {
+            System.out.println(model.readById(id));
+        }catch(NotFoundException e){
+            e.printStackTrace();
+        }
     }
 
 
@@ -35,15 +41,27 @@ public class NewsController {
     }
 
     public void updateNews(NewsDto news){
-        model.update(news);
+        try {
+            System.out.println(model.update(news));
+        }catch(ValidatorException e){
+            e.printStackTrace();
+        }
     }
 
     public void createNews(NewsDto news){
-        model.create(news);
+        try {
+            System.out.println(model.create(news));
+        }catch(ValidatorException e){
+            e.printStackTrace();
+        }
     }
 
     public void deleteNews(Long id){
-        model.delete(id);
+        try {
+            System.out.println(model.delete(id));
+        }catch(NotFoundException e){
+            e.printStackTrace();
+        }
     }
 
 }

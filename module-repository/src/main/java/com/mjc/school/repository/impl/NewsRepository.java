@@ -32,51 +32,49 @@ public class NewsRepository implements Repository<NewsModel> {
     @Override
     public NewsModel readById(Long id){
         System.out.println("Get news by id");
-        for (NewsModel news : dataSource.getNewsDataSource()){
-            if (news.getId().equals(id)){
-                System.out.println("news found");
-                return news;
-            }
+        try {
+            return findNewsById(id);
+        }catch(NotFoundException e){
+            throw e;
         }
-        //throw NewsNotFoundException
-        System.out.println("Exception");
-        System.err.println("Couldn't find the News with provided id");
-        throw new RuntimeException();
     }
 
     @Override
     public NewsModel update(NewsModel news) {
-        for (NewsModel cur : dataSource.getNewsDataSource()){
-            if (cur.getId().equals(news.getId())){
-                System.out.println("Update news");
-                LocalDateTime date = LocalDateTime.now();
-                cur.setTitle(news.getTitle());
-                cur.setContent(news.getContent());
-                cur.setLastUpdateDate(date);
-                cur.setAuthorId(news.getAuthorId());
-            }
+        try {
+            NewsModel newsModel = findNewsById(news.getId());
+            System.out.println("Update news");
+            LocalDateTime date = LocalDateTime.now();
+            newsModel.setTitle(news.getTitle());
+            newsModel.setContent(news.getContent());
+            newsModel.setLastUpdateDate(date);
+            newsModel.setAuthorId(news.getAuthorId());
+            return newsModel;
+        }catch(NotFoundException e){
+            throw e;
         }
-        return news;
     }
 
     @Override
     public Boolean delete(Long id) {
         System.out.println("Delete news with id");
-        for(NewsModel news : dataSource.getNewsDataSource()){
-            if (news.getId().equals(id)){
-                dataSource.getNewsDataSource().remove(news);
-                return Boolean.valueOf("true");
-            }
+        try {
+            NewsModel newsModel = findNewsById(id);
+            dataSource.getNewsDataSource().remove(newsModel);
+            return Boolean.valueOf("true");
+        }catch(NotFoundException e){
+            throw e;
         }
-        return false;
+
     }
 
-    public NewsModel isNewsExist(Long id){
+    public NewsModel findNewsById(Long id){
         for (NewsModel news : dataSource.getNewsDataSource()){
             if (news.getId().equals(id)){
                 return news;
             }
         }
-        throw new RuntimeException("news not found");
+        throw new NotFoundException("News with given id NOT FOUND");
     }
+
 }

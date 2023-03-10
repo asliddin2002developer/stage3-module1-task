@@ -1,5 +1,6 @@
 package com.mjc.school.service.impl;
 
+import com.mjc.school.repository.exception.NotFoundException;
 import com.mjc.school.repository.exception.ValidatorException;
 import com.mjc.school.repository.impl.AuthorRepository;
 import com.mjc.school.repository.model.AuthorModel;
@@ -50,8 +51,12 @@ public class AuthorService implements Service<AuthorDto> {
 
         @Override
         public AuthorDto readById(Long id) {
-            AuthorModel author = authorRepository.isAuthorExist(id);
-            return authorMapper.toDto(author);
+            try {
+                AuthorModel author = authorRepository.findAuthorById(id);
+                return authorMapper.toDto(author);
+            }catch(NotFoundException e){
+                throw e;
+            }
 
         }
 
@@ -65,10 +70,14 @@ public class AuthorService implements Service<AuthorDto> {
 
         @Override
         public AuthorDto update(AuthorDto authorDto) {
-            AuthorModel author = authorRepository.update(authorMapper.toModel(new AuthorDto(
-                                                                authorDto.getId(),
-                                                                authorDto.getName())));
-            return authorMapper.toDto(author);
+            try {
+                AuthorModel author = authorRepository.update(authorMapper.toModel(new AuthorDto(
+                        authorDto.getId(),
+                        authorDto.getName())));
+                return authorMapper.toDto(author);
+            }catch(NotFoundException e){
+                throw e;
+            }
         }
 
         @Override

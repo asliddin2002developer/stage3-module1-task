@@ -34,8 +34,6 @@ public class NewsService implements Service<NewsDto> {
 
     }
 
-
-
     @Override
     public NewsDto create(NewsDto newsDto) {
         //validate
@@ -45,6 +43,7 @@ public class NewsService implements Service<NewsDto> {
                         newsDto.getContent(),
                         newsDto.getAuthorId()));
                 newsRepository.getDataSource().getNewsDataSource().add(news);
+                System.out.println("NEWS WAS SUCCESSFULLY CREATED");
                 return newsDto;
             }
             throw new ValidatorException("News Params is not valid");
@@ -59,6 +58,7 @@ public class NewsService implements Service<NewsDto> {
                     newsDto.getTitle(),
                     newsDto.getContent(),
                     newsDto.getAuthorId())));
+            System.out.println("UPDATE WAS SUCCESSFULL");
             return newsMapper.toDto(news);
         }
         throw new ValidatorException("News Param is not valid");
@@ -66,9 +66,12 @@ public class NewsService implements Service<NewsDto> {
 
     @Override
     public NewsDto readById(Long id) {
-        NewsModel news = newsRepository.isNewsExist(id);
-        return newsMapper.toDto(news);
-
+        try {
+            NewsModel newsModel = newsRepository.findNewsById(id);
+            return newsMapper.toDto(newsModel);
+        }catch(NotFoundException e){
+            throw e;
+        }
     }
 
     @Override
@@ -81,10 +84,10 @@ public class NewsService implements Service<NewsDto> {
 
     @Override
     public Boolean delete(Long id) {
-        if (newsRepository.delete(id)){
-            return true;
-        }else{
-            throw new NotFoundException("News with given id NOT FOUND");
+        try{
+            return newsRepository.delete(id);
+        }catch(NotFoundException e){
+            throw e;
         }
     }
 }
