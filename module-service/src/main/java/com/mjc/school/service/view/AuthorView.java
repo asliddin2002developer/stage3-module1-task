@@ -7,9 +7,10 @@ import java.util.List;
 
 public class AuthorView {
     private List<AuthorDto> allAuthors;
-    private AuthorService authorService = AuthorService.getInstance();
+    private AuthorService authorService;
 
     public AuthorView(){
+        authorService = AuthorService.getInstance();
         allAuthors = authorService.readAll();
     }
 

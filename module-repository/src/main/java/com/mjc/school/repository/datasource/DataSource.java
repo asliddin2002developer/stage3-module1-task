@@ -15,8 +15,8 @@ import lombok.*;
 @Getter
 @Setter
 public class DataSource {
-    private final List<NewsModel> newsDataSource = new ArrayList<>();
-    private final List<AuthorModel> authorsDataSource = new ArrayList<>();
+    private List<NewsModel> newsDataSource;
+    private List<AuthorModel> authorsDataSource;
     private static final Object OBJECT = new Object();
     private static volatile DataSource INSTANCE;
 
@@ -25,6 +25,8 @@ public class DataSource {
         if (result == null){
             synchronized(OBJECT){
                 result = new DataSource();
+                result.newsDataSource = new ArrayList<>();
+                result.authorsDataSource = new ArrayList<>();
                 INSTANCE = result;
 
             }
@@ -35,11 +37,11 @@ public class DataSource {
     public void readFile(String newsFile, String authorsFile){
 
         DataSource app = DataSource.getInstance();
-        InputStream is = app.getFileFromResourceAsStream(newsFile);
-        InputStream is2 = app.getFileFromResourceAsStream(authorsFile);
+        InputStream newsStream = app.getFileFromResourceAsStream(newsFile);
+        InputStream authorStream = app.getFileFromResourceAsStream(authorsFile);
 
-        readAllNews(is);
-        readAllAuthors(is2);
+        readAllNews(newsStream);
+        readAllAuthors(authorStream);
 
     }
 

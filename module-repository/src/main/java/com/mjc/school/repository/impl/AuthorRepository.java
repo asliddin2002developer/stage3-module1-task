@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 public class AuthorRepository implements Repository<AuthorModel> {
-        private final DataSource dataSource;
+        private DataSource dataSource;
         public AuthorRepository() {
             dataSource = DataSource.getInstance();
         }

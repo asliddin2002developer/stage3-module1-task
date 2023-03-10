@@ -5,8 +5,8 @@ import com.mjc.school.service.impl.AuthorService;
 import com.mjc.school.service.view.AuthorView;
 
 public class AuthorController {
-    private AuthorService model;
-    private AuthorView authorView;
+    private final AuthorService model;
+    private final AuthorView authorView;
 
     public AuthorController(){
         model = new AuthorService();

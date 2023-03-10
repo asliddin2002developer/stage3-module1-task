@@ -11,10 +11,10 @@ import java.util.Scanner;
 
 public class NewsManagement {
 
+    private DataSource database;
+    private Scanner scanner;
+    private NewsController controller;
 
-    static DataSource database;
-    Scanner scanner;
-    NewsController controller;
     public NewsManagement(){
         controller = new NewsController();
         scanner = new Scanner(System.in);
@@ -58,7 +58,9 @@ public class NewsManagement {
                     try {
                         controller.createNews(menuHelper());
                         System.out.println("NEWS WAS SUCCESSFULLY CREATED");
-                    }catch(ValidatorException e){
+                    }catch(ValidatorException e ){
+                        e.printStackTrace();
+                    }catch(RuntimeException e){
                         e.printStackTrace();
                     }
                     break;
@@ -78,17 +80,23 @@ public class NewsManagement {
     }
 
     public NewsDto menuHelper(){
+        long id = 0;
         System.out.println("Enter News ID: ");
-        Long id = Long.valueOf(scanner.nextLine());
+        try{
+            id = Long.parseLong(scanner.nextLine());
+        }catch(RuntimeException e){
+            throw new NumberFormatException();
+        }
         System.out.println("Enter News TITLE:");
         String title = scanner.nextLine();
         System.out.println("Enter News CONTENT:");
         String content = scanner.nextLine();
         System.out.println("Enter author ID:");
-        Long authorId  = Long.valueOf(scanner.nextLine());
+        Long authorId = Long.valueOf(scanner.nextLine());
 
         return new NewsDto(id, title, content, authorId);
     }
+    
 
     public void menu(){
         System.out.println("Welcome to the News");

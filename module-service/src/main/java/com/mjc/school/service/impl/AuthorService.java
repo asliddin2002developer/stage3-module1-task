@@ -1,6 +1,6 @@
 package com.mjc.school.service.impl;
 
-import com.mjc.school.repository.exception.LengthIsNotValidException;
+import com.mjc.school.repository.exception.ValidatorException;
 import com.mjc.school.repository.impl.AuthorRepository;
 import com.mjc.school.repository.model.AuthorModel;
 import com.mjc.school.service.Service;
@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class AuthorService implements Service<AuthorDto> {
-        private static AuthorRepository authorRepository;
-        private static AuthorValidation ERROR_VALIDATOR;
-        private static AuthorMapper authorMapper;
+        private AuthorRepository authorRepository;
+        private AuthorValidation errorValidator;
+        private AuthorMapper authorMapper;
         private static final Object OBJECT = new Object();
         private static volatile AuthorService INSTANCE;
 
@@ -23,9 +23,9 @@ public class AuthorService implements Service<AuthorDto> {
             if (result == null){
                 synchronized(OBJECT){
                     result = new AuthorService();
-                    authorRepository = new AuthorRepository();
-                    ERROR_VALIDATOR = new AuthorValidation();
-                    authorMapper = new AuthorMapper();
+                    result.authorRepository = new AuthorRepository();
+                    result.errorValidator = new AuthorValidation();
+                    result.authorMapper = new AuthorMapper();
                     INSTANCE = result;
 
                 }
@@ -39,14 +39,16 @@ public class AuthorService implements Service<AuthorDto> {
         @Override
         public AuthorDto create(AuthorDto authorDto){
             //validate
-//            ERROR_VALIDATOR.isValidAuthorParams(authorDto);
-            AuthorModel author = authorMapper.toModel(new AuthorDto(
-                    authorDto.getId(),
-                    authorDto.getName()
-            ));
-            authorRepository.getDataSource().getAuthorsDataSource().add(author);
+            if (errorValidator.isValidAuthorParams(authorDto)) {
+                AuthorModel author = authorMapper.toModel(new AuthorDto(
+                        authorDto.getId(),
+                        authorDto.getName()
+                ));
+                authorRepository.getDataSource().getAuthorsDataSource().add(author);
 
-            return authorDto;
+                return authorDto;
+            }
+            throw new ValidatorException("Author length should be 3-15 characters");
 
         }
 

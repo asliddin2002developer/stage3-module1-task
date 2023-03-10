@@ -14,9 +14,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class NewsService implements Service<NewsDto> {
-    private static NewsRepository newsRepository;
-    private static NewsValidation ERROR_VALIDATOR;
-    private static NewsMapper newsMapper;
+    private NewsRepository newsRepository;
+    private NewsValidation ERROR_VALIDATOR;
+    private NewsMapper newsMapper;
     private static final Object OBJECT = new Object();
     private static volatile NewsService INSTANCE;
 
@@ -25,9 +25,9 @@ public class NewsService implements Service<NewsDto> {
         if (result == null){
             synchronized(OBJECT){
                 result = new NewsService();
-                newsRepository = new NewsRepository();
-                ERROR_VALIDATOR = new NewsValidation();
-                newsMapper = new NewsMapper();
+                result.newsRepository = new NewsRepository();
+                result.ERROR_VALIDATOR = new NewsValidation();
+                result.newsMapper = new NewsMapper();
                 INSTANCE = result;
 
             }
