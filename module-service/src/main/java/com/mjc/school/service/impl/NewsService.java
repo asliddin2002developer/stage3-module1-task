@@ -14,25 +14,23 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class NewsService implements Service<NewsDto> {
-    private NewsRepository newsRepository;
-    private NewsValidation ERROR_VALIDATOR;
-    private NewsMapper newsMapper;
-    private static final Object OBJECT = new Object();
-    private static volatile NewsService INSTANCE;
+    private final NewsRepository newsRepository;
+    private final NewsValidation ERROR_VALIDATOR;
+    private final NewsMapper newsMapper;
+    private static NewsService INSTANCE;
+
+    private NewsService(){
+        newsRepository = new NewsRepository();
+        ERROR_VALIDATOR = new NewsValidation();
+        newsMapper = new NewsMapper();
+
+    }
 
     public static NewsService getInstance(){
-        NewsService result = INSTANCE;
-        if (result == null){
-            synchronized(OBJECT){
-                result = new NewsService();
-                result.newsRepository = new NewsRepository();
-                result.ERROR_VALIDATOR = new NewsValidation();
-                result.newsMapper = new NewsMapper();
-                INSTANCE = result;
-
-            }
+        if (INSTANCE == null){
+            INSTANCE = new NewsService();
         }
-        return result;
+        return INSTANCE;
 
     }
 

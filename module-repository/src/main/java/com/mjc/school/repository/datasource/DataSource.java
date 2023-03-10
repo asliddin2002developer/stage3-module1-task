@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.*;
 
@@ -17,21 +16,13 @@ import lombok.*;
 public class DataSource {
     private List<NewsModel> newsDataSource;
     private List<AuthorModel> authorsDataSource;
-    private static final Object OBJECT = new Object();
-    private static volatile DataSource INSTANCE;
+    private static DataSource INSTANCE;
 
     public static DataSource getInstance(){
-        DataSource result = INSTANCE;
-        if (result == null){
-            synchronized(OBJECT){
-                result = new DataSource();
-                result.newsDataSource = new ArrayList<>();
-                result.authorsDataSource = new ArrayList<>();
-                INSTANCE = result;
-
-            }
+        if (INSTANCE == null){
+            INSTANCE = new DataSource();
         }
-        return result;
+        return INSTANCE;
     }
 
     public void readFile(String newsFile, String authorsFile){

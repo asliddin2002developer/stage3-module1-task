@@ -9,7 +9,7 @@ public class AuthorController {
     private final AuthorView authorView;
 
     public AuthorController(){
-        model = new AuthorService();
+        model = AuthorService.getInstance();
         authorView = new AuthorView();
     }
 

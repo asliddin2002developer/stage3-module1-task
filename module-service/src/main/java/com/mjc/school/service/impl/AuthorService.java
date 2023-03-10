@@ -12,25 +12,21 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class AuthorService implements Service<AuthorDto> {
-        private AuthorRepository authorRepository;
-        private AuthorValidation errorValidator;
-        private AuthorMapper authorMapper;
-        private static final Object OBJECT = new Object();
-        private static volatile AuthorService INSTANCE;
+        private final AuthorRepository authorRepository;
+        private final AuthorValidation errorValidator;
+        private final AuthorMapper authorMapper;
+        private static AuthorService INSTANCE;
 
+        private AuthorService(){
+            authorRepository = new AuthorRepository();
+            errorValidator = new AuthorValidation();
+            authorMapper = new AuthorMapper();
+        }
         public static AuthorService getInstance(){
-            AuthorService result = INSTANCE;
-            if (result == null){
-                synchronized(OBJECT){
-                    result = new AuthorService();
-                    result.authorRepository = new AuthorRepository();
-                    result.errorValidator = new AuthorValidation();
-                    result.authorMapper = new AuthorMapper();
-                    INSTANCE = result;
-
-                }
+            if (INSTANCE == null){
+                INSTANCE = new AuthorService();
             }
-            return result;
+            return INSTANCE;
 
         }
 

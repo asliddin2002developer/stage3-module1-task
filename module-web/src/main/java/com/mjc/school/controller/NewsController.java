@@ -1,6 +1,5 @@
 package com.mjc.school.controller;
 
-import com.mjc.school.repository.exception.NotFoundException;
 import com.mjc.school.service.view.NewsView;
 import com.mjc.school.service.dto.NewsDto;
 import com.mjc.school.service.impl.NewsService;
