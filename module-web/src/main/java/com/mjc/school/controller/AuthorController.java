@@ -9,9 +9,9 @@ public class AuthorController {
     private final AuthorService model;
     private final AuthorView authorView;
 
-    public AuthorController(){
-        model = AuthorService.getInstance();
-        authorView = new AuthorView();
+    public AuthorController(AuthorService authorService){
+        model = authorService;
+        authorView = new AuthorView(authorService);
     }
 
     public void showView(){

@@ -3,29 +3,28 @@ package com.mjc.school;
 
 import com.mjc.school.controller.NewsController;
 import com.mjc.school.repository.datasource.DataSource;
-import com.mjc.school.repository.exception.NotFoundException;
-import com.mjc.school.repository.exception.ValidatorException;
+
 import com.mjc.school.service.dto.NewsDto;
+import com.mjc.school.service.impl.NewsService;
 
 import java.util.Scanner;
 
 public class NewsManagement {
-
-    private DataSource database;
     private Scanner scanner;
     private NewsController controller;
 
-    public NewsManagement(){
-        controller = new NewsController();
+    public NewsManagement(NewsService newsService){
+        controller = new NewsController(newsService);
         scanner = new Scanner(System.in);
     }
 
     public static void main(String[] args)  {
-        NewsManagement newsManagement = new NewsManagement();
+        DataSource database = retrieveDatabase("content.txt", "author.txt");
+        NewsService newsService = new NewsService(database);
+        NewsManagement newsManagement = new NewsManagement(newsService);
         newsManagement.init();
     }
     public void init(){
-        database = retrieveDatabase("content.txt", "author.txt");
 
         while (true) {
             menu();
@@ -50,7 +49,7 @@ public class NewsManagement {
                     break;
                 case "4":
                     //Create news
-                    controller.createNews(menuHelper());
+                    controller.createNews(createHelper());
                     break;
                 case "5":
                     //delete news
@@ -63,6 +62,17 @@ public class NewsManagement {
         }
     }
 
+
+    public NewsDto createHelper(){
+        System.out.println("Enter News TITLE:");
+        String title = scanner.nextLine();
+        System.out.println("Enter News CONTENT:");
+        String content = scanner.nextLine();
+        System.out.println("Enter author ID:");
+        Long authorId = Long.valueOf(scanner.nextLine());
+
+        return new NewsDto(title, content, authorId);
+    }
     public NewsDto menuHelper(){
         long id = 0;
         System.out.println("Enter News ID: ");
@@ -91,8 +101,8 @@ public class NewsManagement {
         System.out.println("Delete News - 5");
     }
 
-    public DataSource retrieveDatabase(String newsFile, String authorFile){
-        DataSource database = DataSource.getInstance();
+    public static DataSource retrieveDatabase(String newsFile, String authorFile){
+        DataSource database = new DataSource();
         database.readFile(newsFile, authorFile);
         return database;
     }

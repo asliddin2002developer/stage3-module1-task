@@ -9,8 +9,8 @@ public class NewsView {
     private List<NewsDto> allNews;
     NewsService newsService;
 
-    public NewsView(){
-        newsService = NewsService.getInstance();
+    public NewsView(NewsService newsService){
+        this.newsService = newsService;
         allNews = newsService.readAll();
     }
     public void display(){
@@ -19,7 +19,6 @@ public class NewsView {
     }
 
     public void update(){
-        newsService = NewsService.getInstance();
         allNews = newsService.readAll();
     }
 }

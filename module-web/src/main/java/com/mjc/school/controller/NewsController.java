@@ -15,9 +15,9 @@ public class NewsController {
     private NewsService model;
     private NewsView newsView;
 
-    public NewsController(){
-        model = NewsService.getInstance();
-        newsView = new NewsView();
+    public NewsController(NewsService newsService){
+        model = newsService;
+        newsView = new NewsView(newsService);
     }
 
     public void getAllNews(){
@@ -48,9 +48,9 @@ public class NewsController {
         }
     }
 
-    public void createNews(NewsDto news){
+    public void createNews(NewsDto newsDto){
         try {
-            System.out.println(model.create(news));
+            System.out.println(model.create(newsDto));
         }catch(ValidatorException e){
             e.printStackTrace();
         }

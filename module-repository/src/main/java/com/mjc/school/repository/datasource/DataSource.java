@@ -17,25 +17,16 @@ import lombok.*;
 public class DataSource {
     private List<NewsModel> newsDataSource;
     private List<AuthorModel> authorsDataSource;
-    private static DataSource INSTANCE;
 
-    private DataSource(){
+    public DataSource(){
         newsDataSource = new ArrayList<>();
         authorsDataSource = new ArrayList<>();
     }
 
-    public static DataSource getInstance(){
-        if (INSTANCE == null){
-            INSTANCE = new DataSource();
-        }
-        return INSTANCE;
-    }
-
     public void readFile(String newsFile, String authorsFile){
 
-        DataSource app = DataSource.getInstance();
-        InputStream newsStream = app.getFileFromResourceAsStream(newsFile);
-        InputStream authorStream = app.getFileFromResourceAsStream(authorsFile);
+        InputStream newsStream = this.getFileFromResourceAsStream(newsFile);
+        InputStream authorStream = this.getFileFromResourceAsStream(authorsFile);
 
         readAllNews(newsStream);
         readAllAuthors(authorStream);
@@ -103,7 +94,6 @@ public class DataSource {
         newsDataSource.add(news);
         return news;
     }
-
     public AuthorModel addAuthorToDataSource(AuthorModel author){
         authorsDataSource.add(author);
         return author;

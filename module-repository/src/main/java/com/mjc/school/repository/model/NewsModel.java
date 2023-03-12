@@ -36,6 +36,7 @@ public class NewsModel {
         this.authorId = authorId;
     }
 
+
     public String toString(){
         return "[" + this.getId() + "," +
                        this.getContent() + "," +

@@ -1,7 +1,6 @@
 package com.mjc.school.service.mapper;
 
 import com.mjc.school.repository.model.NewsModel;
-import com.mjc.school.service.dto.NewsCreationDto;
 import com.mjc.school.service.dto.NewsDto;
 
 public class NewsMapper {
@@ -13,12 +12,21 @@ public class NewsMapper {
         return new NewsDto(id,title, content, authorId);
     }
 
-    public NewsModel toModel(NewsCreationDto newsCreationDto){
+
+    public NewsModel toModel(NewsDto newsDto){
         return new NewsModel(
-                newsCreationDto.getId(),
-                newsCreationDto.getTitle(),
-                newsCreationDto.getContent(),
-                newsCreationDto.getAuthorId()
+                newsDto.getId(),
+                newsDto.getTitle(),
+                newsDto.getContent(),
+                newsDto.getAuthorId()
+        );
+    }
+
+    public NewsModel toModelCreate(NewsDto newsDto){
+        return new NewsModel(
+                newsDto.getTitle(),
+                newsDto.getContent(),
+                newsDto.getAuthorId()
         );
     }
 }

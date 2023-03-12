@@ -9,8 +9,8 @@ public class AuthorView {
     private List<AuthorDto> allAuthors;
     private AuthorService authorService;
 
-    public AuthorView(){
-        authorService = AuthorService.getInstance();
+    public AuthorView(AuthorService authorService){
+        this.authorService = authorService;
         allAuthors = authorService.readAll();
     }
 
@@ -20,7 +20,6 @@ public class AuthorView {
     }
 
     public void update(){
-        authorService = AuthorService.getInstance();
         allAuthors = authorService.readAll();
     }
 }

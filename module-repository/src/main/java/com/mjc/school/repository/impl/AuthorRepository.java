@@ -11,8 +11,8 @@ import java.util.List;
 @Setter
 public class AuthorRepository implements Repository<AuthorModel> {
         private DataSource dataSource;
-        public AuthorRepository() {
-            dataSource = DataSource.getInstance();
+        public AuthorRepository(DataSource dataSource) {
+            this.dataSource = dataSource;
         }
 
 
@@ -29,36 +29,24 @@ public class AuthorRepository implements Repository<AuthorModel> {
         @Override
         public AuthorModel readById(Long id) {
             System.out.println("Get author by id");
-            try {
-                AuthorModel authorModel = findAuthorById(id);
-                System.out.println("author found");
-                return authorModel;
-            }catch(NotFoundException e){
-                throw e;
-            }
+            AuthorModel authorModel = findAuthorById(id);
+            System.out.println("author found");
+            return authorModel;
         }
 
         @Override
         public AuthorModel update(AuthorModel author) {
-            try{
-                AuthorModel authorModel = findAuthorById(author.getId());
-                authorModel.setName(author.getName());
-                return authorModel;
-            }catch(NotFoundException e){
-                throw e;
-            }
+            AuthorModel authorModel = findAuthorById(author.getId());
+            authorModel.setName(author.getName());
+            return authorModel;
         }
 
         @Override
         public Boolean delete(Long id) {
             System.out.println("Delete Author with id");
-            try{
-                AuthorModel author = findAuthorById(id);
-                dataSource.getAuthorsDataSource().remove(author);
-                return Boolean.valueOf("true");
-            }catch(NotFoundException e){
-                throw e;
-            }
+            AuthorModel author = findAuthorById(id);
+            dataSource.getAuthorsDataSource().remove(author);
+            return Boolean.valueOf("true");
 
         }
 

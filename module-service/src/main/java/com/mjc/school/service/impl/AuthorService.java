@@ -1,6 +1,6 @@
 package com.mjc.school.service.impl;
 
-import com.mjc.school.repository.exception.NotFoundException;
+import com.mjc.school.repository.datasource.DataSource;
 import com.mjc.school.repository.exception.ValidatorException;
 import com.mjc.school.repository.impl.AuthorRepository;
 import com.mjc.school.repository.model.AuthorModel;
@@ -16,19 +16,11 @@ public class AuthorService implements Service<AuthorDto> {
         private final AuthorRepository authorRepository;
         private final AuthorValidation errorValidator;
         private final AuthorMapper authorMapper;
-        private static AuthorService INSTANCE;
 
-        private AuthorService(){
-            authorRepository = new AuthorRepository();
+        private AuthorService(DataSource dataSource){
+            authorRepository = new AuthorRepository(dataSource);
             errorValidator = new AuthorValidation();
             authorMapper = new AuthorMapper();
-        }
-        public static AuthorService getInstance(){
-            if (INSTANCE == null){
-                INSTANCE = new AuthorService();
-            }
-            return INSTANCE;
-
         }
 
 
@@ -37,12 +29,8 @@ public class AuthorService implements Service<AuthorDto> {
         public AuthorDto create(AuthorDto authorDto){
             //validate
             if (errorValidator.isValidAuthorParams(authorDto)) {
-                AuthorModel author = authorMapper.toModel(new AuthorDto(
-                        authorDto.getId(),
-                        authorDto.getName()
-                ));
+                AuthorModel author = authorMapper.toModel(authorDto);
                 authorRepository.getDataSource().getAuthorsDataSource().add(author);
-
                 return authorDto;
             }
             throw new ValidatorException("Author length should be 3-15 characters");
@@ -51,13 +39,8 @@ public class AuthorService implements Service<AuthorDto> {
 
         @Override
         public AuthorDto readById(Long id) {
-            try {
-                AuthorModel author = authorRepository.findAuthorById(id);
-                return authorMapper.toDto(author);
-            }catch(NotFoundException e){
-                throw e;
-            }
-
+            AuthorModel author = authorRepository.findAuthorById(id);
+            return authorMapper.toDto(author);
         }
 
         @Override
@@ -70,14 +53,8 @@ public class AuthorService implements Service<AuthorDto> {
 
         @Override
         public AuthorDto update(AuthorDto authorDto) {
-            try {
-                AuthorModel author = authorRepository.update(authorMapper.toModel(new AuthorDto(
-                        authorDto.getId(),
-                        authorDto.getName())));
-                return authorMapper.toDto(author);
-            }catch(NotFoundException e){
-                throw e;
-            }
+            AuthorModel author = authorRepository.update(authorMapper.toModel(authorDto));
+            return authorMapper.toDto(author);
         }
 
         @Override

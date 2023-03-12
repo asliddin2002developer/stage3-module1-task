@@ -8,7 +8,6 @@ public class AuthorMapper {
     public AuthorDto toDto(AuthorModel author){
         Long id = author.getId();
         String name = author.getName();
-
         return new AuthorDto(id, name);
     }
 
