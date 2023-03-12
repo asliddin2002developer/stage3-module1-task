@@ -58,7 +58,6 @@ public class DataSource {
                 String authorId = arr[4].split(":")[1].strip();
                 newsDataSource.add(new NewsModel(title, content, Long.valueOf(authorId)));
             }
-//            System.out.println(newsDataSource);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -77,7 +76,6 @@ public class DataSource {
                 String authorName = arr[1].strip();
                 authorsDataSource.add(new AuthorModel(authorId, authorName));
             }
-//            System.out.println(newsDataSource);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

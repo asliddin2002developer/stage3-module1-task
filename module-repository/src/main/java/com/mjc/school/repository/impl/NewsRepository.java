@@ -18,7 +18,6 @@ public class NewsRepository implements Repository<NewsModel> {
         this.dataSource = dataSource;
     }
 
-
     @Override
     public NewsModel create(NewsModel news) {
         return dataSource.addNewsToDataSource(news);

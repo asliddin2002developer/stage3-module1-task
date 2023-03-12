@@ -1,8 +1,6 @@
 package com.mjc.school.service.impl;
 
 import com.mjc.school.repository.datasource.DataSource;
-import com.mjc.school.repository.exception.NotFoundException;
-import com.mjc.school.repository.exception.ValidatorException;
 import com.mjc.school.repository.impl.NewsRepository;
 import com.mjc.school.repository.model.NewsModel;
 import com.mjc.school.service.Service;
