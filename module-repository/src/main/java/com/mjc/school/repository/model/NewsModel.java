@@ -1,8 +1,6 @@
 package com.mjc.school.repository.model;
 import lombok.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 
@@ -10,7 +8,6 @@ import java.util.concurrent.atomic.AtomicLong;
 @Setter
 public class NewsModel {
     private static final AtomicLong count = new AtomicLong(0);
-    public static List<NewsModel> allNews = new ArrayList<>();
     private Long id;
     private String title;
     private String content;

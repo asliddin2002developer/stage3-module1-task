@@ -35,7 +35,6 @@ public class NewsController {
         }
     }
 
-
     public void showView(){
         newsView.display();
     }
@@ -43,7 +42,7 @@ public class NewsController {
     public void updateNews(NewsDto news){
         try {
             System.out.println(model.update(news));
-        }catch(ValidatorException e){
+        }catch(ValidatorException | NotFoundException e){
             e.printStackTrace();
         }
     }
@@ -51,7 +50,7 @@ public class NewsController {
     public void createNews(NewsDto newsDto){
         try {
             System.out.println(model.create(newsDto));
-        }catch(ValidatorException e){
+        }catch(ValidatorException | NotFoundException e){
             e.printStackTrace();
         }
     }

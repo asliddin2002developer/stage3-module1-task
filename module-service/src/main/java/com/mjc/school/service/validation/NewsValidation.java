@@ -1,6 +1,8 @@
 package com.mjc.school.service.validation;
 
 import com.mjc.school.repository.datasource.DataSource;
+import com.mjc.school.repository.exception.NotFoundException;
+import com.mjc.school.repository.exception.ValidatorException;
 import com.mjc.school.repository.impl.AuthorRepository;
 import com.mjc.school.service.dto.NewsDto;
 
@@ -24,14 +26,11 @@ public class NewsValidation {
 
 
         if (title.length() < 5 || news.getTitle().length() >= 30) {
-            System.err.println(TITLE_LENGTH_VALIDATOR);
-            return false;
+            throw new ValidatorException(TITLE_LENGTH_VALIDATOR);
         } else if (content.length() < 5 || news.getContent().length() >= 255) {
-            System.err.println(CONTENT_LENGTH_VALIDATOR);
-            return false;
-        } else if (authorRepository.findAuthorById(authorId).getId() == null) {
-            System.err.println(AUTHOR_NOT_FOUND_VALIDATOR);
-            return false;
+            throw new ValidatorException(CONTENT_LENGTH_VALIDATOR);
+        }else if (authorRepository.findAuthorById(authorId).getId() == null) {
+            throw new NotFoundException(AUTHOR_NOT_FOUND_VALIDATOR);
         }
         return true;
     }

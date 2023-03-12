@@ -1,6 +1,7 @@
 package com.mjc.school.service.impl;
 
 import com.mjc.school.repository.datasource.DataSource;
+import com.mjc.school.repository.exception.NotFoundException;
 import com.mjc.school.repository.exception.ValidatorException;
 import com.mjc.school.repository.impl.NewsRepository;
 import com.mjc.school.repository.model.NewsModel;
@@ -25,14 +26,15 @@ public class NewsService implements Service<NewsDto> {
 
     public NewsDto create(NewsDto newsDto) {
         //validate
-            if (ERROR_VALIDATOR.isValidNewsParams(newsDto)) {
-                NewsModel news = newsMapper.toModelCreate(newsDto);
-                newsRepository.getDataSource().getNewsDataSource().add(news);
-                System.out.println("NEWS WAS SUCCESSFULLY CREATED");
-                return newsMapper.toDto(news);
-            }
-            throw new ValidatorException("News Params is not valid");
+        if (ERROR_VALIDATOR.isValidNewsParams(newsDto)) {
+            NewsModel news = newsMapper.toModelCreate(newsDto);
+            newsRepository.getDataSource().getNewsDataSource().add(news);
+            System.out.println("NEWS WAS SUCCESSFULLY CREATED");
+            return newsMapper.toDto(news);
         }
+        return newsDto;
+
+    }
 
 
     @Override
@@ -42,7 +44,7 @@ public class NewsService implements Service<NewsDto> {
             System.out.println("UPDATE WAS SUCCESSFULL");
             return newsMapper.toDto(news);
         }
-        throw new ValidatorException("News Param is not valid");
+        return newsDto;
     }
 
     @Override
